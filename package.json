@@ -1,0 +1,14 @@
+{
+  "name": "infected_website_support_system",
+  "version": "1.0.0",
+  "description": "web service",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon start"
+  },
+  "keywords": [
+    "Malware"
+  ],
+  "author": "Ade",
+  "license": "MIT"
+}
