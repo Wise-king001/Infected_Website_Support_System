@@ -1,0 +1,36 @@
+<!-- <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virus Checker - Check Sites for Safety</title>
+  <link rel="stylesheet" href="/css/styles.css"> -->
+
+  <!-- Include header partial -->
+  <!-- <%- include partials/header.ejs %> -->
+
+  <!-- Hero Section -->
+  <!-- <section class="hero">
+    <div class="hero-content">
+      <h1>Protect Yourself Online</h1>
+      <p>Stay safe by verifying websites before you visit. Know which sites are infected with viruses or malware.</p>
+      <a href="/signup" class="cta-button">Get Started</a>
+    </div>
+  </section>-->
+
+  <!-- Features Section --> 
+  <!-- <section class="features">
+    <div class="feature">
+      <h2>Real-Time Scanning</h2>
+      <p>Get instant results on whether a website is safe to browse.</p>
+    </div>
+    <div class="feature">
+      <h2>User Reviews</h2>
+      <p>Read what others say about a website's safety.</p>
+    </div>
+    <div class="feature">
+      <h2>Community Alerts</h2>
+      <p>Stay updated with the latest on potentially harmful sites.</p>
+    </div>
+  </section> -->
+
+  <!-- Include footer partial -->
+  <!-- <%- include partials/footer.ejs %> -->
+

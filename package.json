@@ -10,5 +10,11 @@
     "Malware"
   ],
   "author": "Ade",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "havocwebdblite": "^1.0.0-4"
+  }
 }
