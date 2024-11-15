@@ -9,12 +9,11 @@ const session = require("express-session");
 const fs = require("fs");
 const isAuthenticated = require("./component/authMiddle");
 
-
 app.use(
   session({
-    secret: 'nano', // Replace with your own secret key
-    resave: false,              // Don't save session if unmodified
-    saveUninitialized: false,   // Don't create session until something is stored
+    secret: "nano", // Replace with your own secret key
+    resave: false, // Don't save session if unmodified
+    saveUninitialized: false, // Don't create session until something is stored
     cookie: {
       maxAge: 24 * 60 * 60 * 1000, // 24 hours (in milliseconds)
     },
@@ -27,7 +26,7 @@ app.set("view engine", "ejs");
 
 // Serve static files (like CSS) from the "public" directory
 app.use(express.static(path.join(__dirname, "public")));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 console.log(path.join(__dirname, "public")); // Verify the full path being used
 app.use((req, res, next) => {
   console.log(
@@ -95,11 +94,11 @@ app.get("/", (req, res) => {
   const { success } = req.query;
   const user = req.session.user || null;
   console.log(user, req.session.user);
-  res.render("index", { success: success === "true", user});
+  res.render("index", { success: success === "true", user });
 });
 
 app.get("/login", async (req, res) => {
-  const {error, loc} = req.query;
+  const { error, loc } = req.query;
   const isDB = await HavocwebDB.isDatabaseAvailable();
   if (!isDB) {
     await HavocwebDB.createLocalDB();
@@ -113,36 +112,40 @@ app.get("/login", async (req, res) => {
     );
   }
   const user = req.session.user || null;
-  res.render("login", {user, error, loc});
+  res.render("login", { user, error, loc });
 });
 
-app.post("/login", async(req, res) => {
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  try{
-    const Users = await HavocwebDB.query(`SELECT * FROM user WHERE email = '${email}'`);
+  try {
+    const Users = await HavocwebDB.query(
+      `SELECT * FROM user WHERE email = '${email}'`
+    );
     console.log(Users);
     const OUser = Users[0];
     console.log("user", OUser);
-    if(OUser !== undefined && OUser !== null){
-      if(OUser.password === password){
-        if (OUser.role === "admin"){
-            req.session.user = OUser;
-            res.redirect("/admin?success=true");
-        }else{
-            req.session.user = OUser;
-            res.redirect("/");
+    if (OUser !== undefined && OUser !== null) {
+      if (OUser.password === password) {
+        if (OUser.role === "admin") {
+          req.session.user = OUser;
+          res.redirect("/admin?success=true");
+        } else {
+          req.session.user = OUser;
+          res.redirect("/");
         }
-      }else{
+      } else {
         res.redirect("/login?error=password");
       }
-    }else{
-      res.redirect("/login?error=user")
+    } else {
+      res.redirect("/login?error=user");
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
-    res.redirect("/error?errorname=ServerError&errormessage=An internal error occurred");
+    res.redirect(
+      "/error?errorname=ServerError&errormessage=An internal error occurred"
+    );
   }
-})
+});
 app.get("/signup", async (req, res) => {
   const isDB = await HavocwebDB.isDatabaseAvailable();
   if (!isDB) {
@@ -157,21 +160,25 @@ app.get("/signup", async (req, res) => {
     );
   }
   const user = req.session.user || null;
-  res.render("signup", {user});
+  res.render("signup", { user });
 });
 app.post("/signup", async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
-    const isUserExists = await HavocwebDB.query(`SELECT * FROM user WHERE email = '${email}'`);
+    const isUserExists = await HavocwebDB.query(
+      `SELECT * FROM user WHERE email = '${email}'`
+    );
 
     if (isUserExists.length > 0) {
       res.redirect("/signup?error=User already exists");
       return;
     }
 
-    await HavocwebDB.query(`INSERT INTO user (username, email, password, role) VALUES ('${username}', '${email}', '${password}', 'user')`);
-    let role ="user";
+    await HavocwebDB.query(
+      `INSERT INTO user (username, email, password, role) VALUES ('${username}', '${email}', '${password}', 'user')`
+    );
+    let role = "user";
     // Automatically log in the user after signup
     req.session.user = { username, email, role };
     res.redirect("/");
@@ -187,30 +194,37 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/blog", async (req, res) => {
-  const isDB = await HavocwebDB.isDatabaseAvailable();
-  if (!isDB) {
-    await HavocwebDB.createLocalDB();
+  const blogFolderPath = path.join(__dirname, "data", "blog");
+
+  // Check if the 'blog' folder exists, and if not, return an empty array
+  if (!fs.existsSync(blogFolderPath)) {
+    return res.render("blog", { posts: [], user: req.session.user || null });
   }
 
-  const isTB = await HavocwebDB.isTableAvailable("blog");
-  if (!isTB) {
-    // await HavocwebDB.query(
-    //   "CREATE TABLE blog (postID TEXT, title TEXT, body TEXT, imgurl TEXT, time TEXT)"
-    // );
-    await HavocwebDB.addTable("blog", ["postID", "title", "body", "imgurl", "time"]);
-  }
+  // Read all files in the 'blog' folder
+  const files = fs.readdirSync(blogFolderPath);
 
-  // Fetch posts from the database
-  const blogPosts = await HavocwebDB.sqlSelect("blog", "*", "");
-  // const blogPosts = []
+  // Read each file and parse the JSON data
+  const blogPosts = files
+    .filter((file) => file.endsWith(".json")) // Only JSON files
+    .map((file) => {
+      const filePath = path.join(blogFolderPath, file);
+      const fileData = fs.readFileSync(filePath, "utf-8");
+      return JSON.parse(fileData);
+    });
+
   console.log(blogPosts);
-  // Sort the posts manually by time (descending)
-  const sortedPosts = blogPosts.sort((a, b) => parseInt(b.time) - parseInt(a.time));
+
+  // Sort the posts by time (descending)
+  const sortedPosts = blogPosts.sort(
+    (a, b) => parseInt(b.time) - parseInt(a.time)
+  );
 
   // Process each post (truncate, format)
-  const processedPosts = sortedPosts.map(post => {
+  const processedPosts = sortedPosts.map((post) => {
     // Truncate title to 50 characters if too long
-    const truncatedTitle = post.title.length > 50 ? post.title.substring(0, 50) + "..." : post.title;
+    const truncatedTitle =
+      post.title.length > 50 ? post.title.substring(0, 50) + "..." : post.title;
 
     // Truncate body to 25 words
     const truncatedBody = post.body.split(" ").slice(0, 25).join(" ") + "...";
@@ -231,9 +245,9 @@ app.get("/blog", async (req, res) => {
     } else if (differenceInMinutes < 2880) {
       formattedTime = "yesterday";
     } else if (differenceInMinutes < 7200) {
-      formattedTime = postTime.toLocaleDateString('en-US', { weekday: 'long' });
+      formattedTime = postTime.toLocaleDateString("en-US", { weekday: "long" });
     } else {
-      formattedTime = postTime.toLocaleDateString('en-GB');
+      formattedTime = postTime.toLocaleDateString("en-GB");
     }
 
     return {
@@ -243,24 +257,33 @@ app.get("/blog", async (req, res) => {
       time: formattedTime,
     };
   });
+
+  // Render the blog page with the processed posts
   const user = req.session.user || null;
-  res.render("blog", { posts: processedPosts, user});
+  res.render("blog", { posts: processedPosts, user });
 });
+
 app.get("/blog/:postID", async (req, res) => {
   const { postID } = req.params;
 
-  // Fetch the full post from the database
-  const post = await HavocwebDB.query(`SELECT * FROM blog WHERE postID = '${postID}'`);
+  // Define the path to the blog folder
+  const blogFolderPath = path.join(__dirname, "data", "blog");
 
-  if (post.length === 0) {
+  // Construct the file path for the specific post
+  const postFilePath = path.join(blogFolderPath, `${postID}.json`);
+
+  // Check if the post file exists
+  if (!fs.existsSync(postFilePath)) {
     return res.status(404).send("Post not found.");
   }
 
-  const fullPost = post[0];  // Assuming postID is unique
-  const postTime = new Date(parseInt(fullPost.time));
-  let formattedTime;
+  // Read and parse the post data from the JSON file
+  const fileData = fs.readFileSync(postFilePath, "utf-8");
+  const fullPost = JSON.parse(fileData);
 
   // Format the time as before
+  const postTime = new Date(parseInt(fullPost.time));
+  let formattedTime;
   const now = new Date();
   const differenceInMs = now - postTime;
   const differenceInMinutes = Math.floor(differenceInMs / (1000 * 60));
@@ -274,22 +297,30 @@ app.get("/blog/:postID", async (req, res) => {
   } else if (differenceInMinutes < 2880) {
     formattedTime = "yesterday";
   } else if (differenceInMinutes < 7200) {
-    formattedTime = postTime.toLocaleDateString('en-US', { weekday: 'long' });
+    formattedTime = postTime.toLocaleDateString("en-US", { weekday: "long" });
   } else {
-    formattedTime = postTime.toLocaleDateString('en-GB');
+    formattedTime = postTime.toLocaleDateString("en-GB");
   }
 
-  // Replace custom link syntax with actual HTML anchor tags in post body
-  const processedBody = fullPost.body.replace(/{%a="(.*?)",t="(.*?)"%}/g, (match, url, text) => {
-    return `<a href="${url}" target="_blank" class="blogLink">${text}</a>`;
-  });
+  // Replace custom link syntax with actual HTML anchor tags in the post body
+  const processedBody = fullPost.body.replace(
+    /{%a="(.*?)",t="(.*?)"%}/g,
+    (match, url, text) => {
+      return `<a href="${url}" target="_blank" class="blogLink">${text}</a>`;
+    }
+  );
+
+  // Render the full post page
   const user = req.session.user || null;
-  res.render("fullPost", { post: { ...fullPost, body: processedBody }, time: formattedTime, user });
+  res.render("fullPost", {
+    post: { ...fullPost, body: processedBody },
+    time: formattedTime,
+    user,
+  });
 });
 
-
 app.get("/admin/addmalware", isAuthenticated("admin"), async (req, res) => {
-  const {success} = req.query;
+  const { success } = req.query;
   const isDB = await HavocwebDB.isDatabaseAvailable();
   if (!isDB) {
     await HavocwebDB.createLocalDB();
@@ -298,9 +329,7 @@ app.get("/admin/addmalware", isAuthenticated("admin"), async (req, res) => {
   const isTB = await HavocwebDB.isTableAvailable("props");
   console.log("isTableAvailable", isTB);
   if (!isTB) {
-    await HavocwebDB.query(
-      "CREATE TABLE props (type TEXT, list TEXT)"
-    );
+    await HavocwebDB.query("CREATE TABLE props (type TEXT, list TEXT)");
   }
   const isTB2 = await HavocwebDB.isTableAvailable("malware");
   console.log("isTableAvailable", isTB2);
@@ -309,8 +338,8 @@ app.get("/admin/addmalware", isAuthenticated("admin"), async (req, res) => {
       "CREATE TABLE malware (name TEXT, symptom TEXT, behave TEXT, explain TEXT, solution TEXT)"
     );
   }
-  res.render("addmalware", {success: success=== "true"});
-})
+  res.render("addmalware", { success: success === "true" });
+});
 
 app.post("/admin/addmalware", isAuthenticated("admin"), async (req, res) => {
   const { name, symptoms, behave, content, solution } = req.body;
@@ -320,7 +349,11 @@ app.post("/admin/addmalware", isAuthenticated("admin"), async (req, res) => {
   try {
     // Paths for files
     const symptomsFile = path.join(__dirname, "data/symptoms", "symptoms.json");
-    const behaviorsFile = path.join(__dirname, "data/behaviors", "behaviors.json");
+    const behaviorsFile = path.join(
+      __dirname,
+      "data/behaviors",
+      "behaviors.json"
+    );
     const malwareFile = path.join(__dirname, "data/malware.json");
 
     // Ensure directories and files exist
@@ -344,16 +377,20 @@ app.post("/admin/addmalware", isAuthenticated("admin"), async (req, res) => {
     let malwareData = JSON.parse(fs.readFileSync(malwareFile, "utf8"));
 
     // Normalize and append new data
-    const userSymptoms = symptoms.split(",").map(item => item.trim().toLowerCase());
-    const userBehaviors = behave.split(",").map(item => item.trim().toLowerCase());
+    const userSymptoms = symptoms
+      .split(",")
+      .map((item) => item.trim().toLowerCase());
+    const userBehaviors = behave
+      .split(",")
+      .map((item) => item.trim().toLowerCase());
 
-    userSymptoms.forEach(symptom => {
+    userSymptoms.forEach((symptom) => {
       if (!existingSymptoms.includes(symptom)) {
         existingSymptoms.push(symptom);
       }
     });
 
-    userBehaviors.forEach(behavior => {
+    userBehaviors.forEach((behavior) => {
       if (!existingBehaviors.includes(behavior)) {
         existingBehaviors.push(behavior);
       }
@@ -364,7 +401,13 @@ app.post("/admin/addmalware", isAuthenticated("admin"), async (req, res) => {
     fs.writeFileSync(behaviorsFile, JSON.stringify(existingBehaviors, null, 2));
 
     // Append malware data
-    malwareData.push({ name, symptoms: userSymptoms, behave: userBehaviors, content, solution });
+    malwareData.push({
+      name,
+      symptoms: userSymptoms,
+      behave: userBehaviors,
+      content,
+      solution,
+    });
     fs.writeFileSync(malwareFile, JSON.stringify(malwareData, null, 2));
 
     res.redirect("/admin/addmalware?success=true");
@@ -377,20 +420,24 @@ app.post("/admin/addmalware", isAuthenticated("admin"), async (req, res) => {
 app.get("/report", async (req, res) => {
   try {
     const isDB = await HavocwebDB.isDatabaseAvailable();
-  if (!isDB) {
-    await HavocwebDB.createLocalDB();
-  }
+    if (!isDB) {
+      await HavocwebDB.createLocalDB();
+    }
 
-  const isTB = await HavocwebDB.isTableAvailable("report");
-  console.log("isTableAvailable", isTB);
-  if (!isTB) {
-    await HavocwebDB.query(
-      "CREATE TABLE report (Uniqueid TEXT, symptoms TEXT, device TEXT, operatingSystem TEXT, apps TEXT, networkType TEXT, antiVirus TEXT, images TEXT, Behavior TEXT)"
-    );
-  }
+    const isTB = await HavocwebDB.isTableAvailable("report");
+    console.log("isTableAvailable", isTB);
+    if (!isTB) {
+      await HavocwebDB.query(
+        "CREATE TABLE report (Uniqueid TEXT, symptoms TEXT, device TEXT, operatingSystem TEXT, apps TEXT, networkType TEXT, antiVirus TEXT, images TEXT, Behavior TEXT)"
+      );
+    }
     // Paths for files
     const symptomsFile = path.join(__dirname, "data/symptoms", "symptoms.json");
-    const behaviorsFile = path.join(__dirname, "data/behaviors", "behaviors.json");
+    const behaviorsFile = path.join(
+      __dirname,
+      "data/behaviors",
+      "behaviors.json"
+    );
 
     // Ensure files exist
     const symptoms = fs.existsSync(symptomsFile)
@@ -404,14 +451,12 @@ app.get("/report", async (req, res) => {
     console.log("Behaviors:", behaviors);
     const user = req.session.user || null;
     // Render the report page with symptoms and behaviors
-    res.render("report", { symptoms, behaviors, user});
+    res.render("report", { symptoms, behaviors, user });
   } catch (error) {
     console.error("Error loading data:", error);
     res.status(500).send("Error loading report data.");
   }
 });
-
-
 
 app.post("/report", upload.array("screenshot", 3), async (req, res) => {
   const {
@@ -477,7 +522,10 @@ app.get("/report-results", async (req, res) => {
     const reportData = JSON.parse(fs.readFileSync(filePath, "utf8"));
 
     // Combine symptoms and behavior
-    const userIndicators = [...(reportData.symptoms || []), ...(reportData.behavior || [])];
+    const userIndicators = [
+      ...(reportData.symptoms || []),
+      ...(reportData.behavior || []),
+    ];
 
     // Path to the malware JSON file
     const malwareFilePath = path.join(__dirname, "data/malware.json");
@@ -521,7 +569,7 @@ app.get("/report-results", async (req, res) => {
             solution: matchedMalware[1].solution,
           }
         : null;
-        const user = req.session.user || null;
+    const user = req.session.user || null;
     // Render the feedback page with the diagnosis
     res.render("feedback", {
       Malware: mainMalware?.name || "None",
@@ -529,15 +577,17 @@ app.get("/report-results", async (req, res) => {
       MainMalwareSolution: mainMalware?.solution || "No solution required.",
       Malware2: secondaryMalware?.name || "None",
       Malware2Solution: secondaryMalware?.solution || "No solution required.",
-      user
+      user,
     });
   } catch (e) {
     console.error("Error fetching report results:", e);
-    res.status(500).send("An error occurred while retrieving the report results.");
+    res
+      .status(500)
+      .send("An error occurred while retrieving the report results.");
   }
 });
-app.get("/admin/login", async (req, res)=> {
-  const {error, loc} = req.query;
+app.get("/admin/login", async (req, res) => {
+  const { error, loc } = req.query;
   const isDB = await HavocwebDB.isDatabaseAvailable();
   if (!isDB) {
     await HavocwebDB.createLocalDB();
@@ -550,34 +600,40 @@ app.get("/admin/login", async (req, res)=> {
       "CREATE TABLE user (username TEXT, email TEXT, password TEXT, role TEXT)"
     );
   }
-  res.render("admin", {error, loc});
-})
+  res.render("admin", { error, loc });
+});
 app.post("/admin/login", async (req, res) => {
   const { email, password } = req.body;
-  try{
-    const Users = await HavocwebDB.query(`SELECT * FROM user WHERE email = '${email}'`);
+  try {
+    const Users = await HavocwebDB.query(
+      `SELECT * FROM user WHERE email = '${email}'`
+    );
     console.log(Users);
     const OUser = Users[0];
-    if(OUser !== undefined && OUser !== null){
-      if(OUser.password === password){
-        if (OUser.role === "admin"){
-            req.session.user = OUser;
-            res.redirect("/admin?success=true");
-        }else{
-            res.redirect("/error?errorname=UnAuthorized Access&errormessage=You are not allowed to Login as an Administrator, Use the User Login instead");
+    if (OUser !== undefined && OUser !== null) {
+      if (OUser.password === password) {
+        if (OUser.role === "admin") {
+          req.session.user = OUser;
+          res.redirect("/admin?success=true");
+        } else {
+          res.redirect(
+            "/error?errorname=UnAuthorized Access&errormessage=You are not allowed to Login as an Administrator, Use the User Login instead"
+          );
         }
-      }else{
+      } else {
         res.redirect("/admin/login?error=password");
       }
-    }else{
-      res.redirect("/admin/login?error=user")
+    } else {
+      res.redirect("/admin/login?error=user");
     }
-  }catch(e){
+  } catch (e) {
     console.log(e);
-    res.redirect("/error?errorname=ServerError&errormessage=An internal error occurred");
+    res.redirect(
+      "/error?errorname=ServerError&errormessage=An internal error occurred"
+    );
   }
-})
-app.get("/admin", isAuthenticated("admin"), async (req, res)=> {
+});
+app.get("/admin", isAuthenticated("admin"), async (req, res) => {
   const isDB = await HavocwebDB.isDatabaseAvailable();
   if (!isDB) {
     await HavocwebDB.createLocalDB();
@@ -590,10 +646,13 @@ app.get("/admin", isAuthenticated("admin"), async (req, res)=> {
       "CREATE TABLE blog (postID TEXT, title TEXT, body TEXT, imgurl TEXT, time TEXT)"
     );
   }
-  const {success, bs} = req.query;
-  res.render("adminhome", {success: success === "true", blogged:bs==="true"});
+  const { success, bs } = req.query;
+  res.render("adminhome", {
+    success: success === "true",
+    blogged: bs === "true",
+  });
 });
-app.get("/admin/create", async (req, res)=> {
+app.get("/admin/create", async (req, res) => {
   const isDB = await HavocwebDB.isDatabaseAvailable();
   if (!isDB) {
     await HavocwebDB.createLocalDB();
@@ -608,51 +667,89 @@ app.get("/admin/create", async (req, res)=> {
   }
 
   res.render("createadmin");
-})
-app.post("/admin/create", async(req, res)=>{
-  const {username, email, password, code} = req.body;
-  let og_code = "000000";
-try{
-  if(code === og_code){
-    await HavocwebDB.query(`INSERT INTO user (username, email, password, role) VALUES (${username}, ${email}, ${password}, 'admin')`);
-    res.redirect("/admin/login?loc=signup");
-  }
-  else{
-    res.redirect("/error?errorname=UnAuthorized Access&errormessage=You are not allowed to Sign-Up as an Administrator, Use the User Sign-Up instead");
-  }
-}catch(e){
-  console.log(e);
-    res.redirect("/error?errorname=ServerError&errormessage=An internal error occurred");
-}
-})
-app.post("/blog", isAuthenticated("admin"), upload.array("image", 3), async(req, res) => {
-  const { title, content } = req.body;
-  const time = new Date().getTime();
-
-  // Assuming `req.reportId` is set or passed from the client as part of the request
-  const reportId = req.reportId;
-  let postID=reportId
-  let body = content
-  // Construct the URLs for each uploaded file
-  const imageUrls = req.files.map(file => `/uploads/${reportId}/${path.basename(file.path)}`);
-  let imgurl = imageUrls
-  // await HavocwebDB.query(`INSERT INTO blog (postID, title, body, imgurl, time) VALUES (${reportId}, ${title}, ${content}, ${imageUrls}, ${time})`)
-  await HavocwebDB.insertIntoTable("blog", { postID, title, body, imgurl, time })
-  console.log("Title:", title);
-  console.log("Content:", content);
-  console.log("Time:", time);
-  console.log("Image URLs:", imageUrls);
-
-  // Respond with the URLs or store them in the database
-  res.redirect("/admin?bs=true");
 });
+app.post("/admin/create", async (req, res) => {
+  const { username, email, password, code } = req.body;
+  let og_code = "000000";
+  try {
+    if (code === og_code) {
+      await HavocwebDB.query(
+        `INSERT INTO user (username, email, password, role) VALUES (${username}, ${email}, ${password}, 'admin')`
+      );
+      res.redirect("/admin/login?loc=signup");
+    } else {
+      res.redirect(
+        "/error?errorname=UnAuthorized Access&errormessage=You are not allowed to Sign-Up as an Administrator, Use the User Sign-Up instead"
+      );
+    }
+  } catch (e) {
+    console.log(e);
+    res.redirect(
+      "/error?errorname=ServerError&errormessage=An internal error occurred"
+    );
+  }
+});
+app.post(
+  "/blog",
+  isAuthenticated("admin"),
+  upload.array("image", 3),
+  async (req, res) => {
+    const { title, content } = req.body;
+    const time = new Date().getTime();
+    const reportId = req.reportId; // Assuming `reportId` is available in `req`
 
-app.get("/error", (req, res)=> {
+    const postID = reportId;
+    const body = content;
+
+    // Construct the URLs for each uploaded file
+    const imageUrls = req.files.map(
+      (file) => `/uploads/${reportId}/${path.basename(file.path)}`
+    );
+
+    // Prepare the blog data to be written to a file
+    const blogData = {
+      postID,
+      title,
+      body,
+      imgurl: imageUrls,
+      time,
+    };
+
+    // Define the path for the new blog post file
+    const blogFolderPath = path.join(__dirname, "data", "blog");
+
+    // Create the blog folder if it doesn't exist
+    if (!fs.existsSync(blogFolderPath)) {
+      fs.mkdirSync(blogFolderPath, { recursive: true });
+    }
+
+    // Define the file path for this blog post
+    const blogFilePath = path.join(blogFolderPath, `${postID}.json`);
+
+    // Write the blog data to the file
+    try {
+      fs.writeFileSync(blogFilePath, JSON.stringify(blogData, null, 2));
+      console.log("Blog post saved:", blogFilePath);
+
+      // Redirect to the admin page with success flag
+      res.redirect("/admin?bs=true");
+    } catch (error) {
+      console.error("Error saving blog post:", error);
+      res.status(500).send("Failed to save the blog post.");
+    }
+  }
+);
+
+app.get("/error", (req, res) => {
   const query = req.query;
   console.log(query);
   const user = req.session.user || null;
-  res.render("Error", {errorname: query.errorname, errormessage: query.errormessage, user});
-})
+  res.render("Error", {
+    errorname: query.errorname,
+    errormessage: query.errormessage,
+    user,
+  });
+});
 // Start the server
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
