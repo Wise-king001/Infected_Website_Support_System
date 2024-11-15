@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= post.title %> - Blog</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <%- include ("partials/header") %>
+
+  <section class="full-post-section">
+    <h1><%= post.title %></h1>
+    <small><%= time %></small>
+    <div class="post-body">
+        <%- include('partials/renderLinks', { body: post.body }) %>
+    </div>
+    <center>
+    <!-- If there's an image, you can display it here -->
+    <% if (post.imgurl) { %>
+      <img src="<%= post.imgurl %>" alt="Blog Image">
+    <% } %>
+</center>
+  </section>
+
+  <%- include ("partials/footer") %>
+</body>
+</html>

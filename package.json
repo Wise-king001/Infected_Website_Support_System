@@ -15,6 +15,9 @@
     "cors": "^2.8.5",
     "ejs": "^3.1.10",
     "express": "^4.21.1",
-    "havocwebdblite": "^1.0.0-4"
+    "express-session": "^1.18.1",
+    "havocwebdblite": "^1.0.1-1",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^11.0.3"
   }
 }

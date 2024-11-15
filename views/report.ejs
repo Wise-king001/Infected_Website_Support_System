@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Suspicions - Virus Checker</title>
+  <link rel="stylesheet" href="/css/styles.css" type="text/css">
+</head>
+<body>
+  <%- include ("partials/header") %>
+
+  <section class="form-section">
+    <h1>Fill the Form Below</h1>
+    <hr />
+    <br />
+    <br />
+    <form action="/report" method="POST" enctype="multipart/form-data">
+        <h2>Symptoms</h2>
+        <br>
+        <p>What are the symptoms you're experiencing in your Device. (Multiple Check)</p>
+        <br>
+        <br>
+        <% symptoms.forEach(symptom => { %>
+          <label class="symptoms">
+              <input type="checkbox" name="symptoms" value="<%= symptom %>"> <%= symptom %>
+          </label><br>
+      <% }); %>
+        <hr />
+    
+        <br>
+        <br>
+        <h2>Device Information</h2>
+        <br>
+        <p> Tell Us More About your device.</p>
+        <br>
+        <br>
+        <br>
+        <label>Device Type: 
+          <br>
+          <select name="device_type" id="didi">
+            <option value="android">Android</option>
+            <option value="ios">iOS</option>
+            <option value="windows">Windows</option>
+            <option value="macos">macOS</option>
+          </select>
+        </label><br>
+        <label>Operating System Version:
+          <input type="text" name="os_version">
+        </label><br>
+        <label>Recent Apps Installed:
+          <input type="text" name="recent_apps">
+        </label><br>
+        <label>Network Type:
+          <input type="text" name="network_type">
+        </label><br>
+        <label>Date of Last Antivirus Scan:
+          <input type="date" name="last_scan_date">
+        </label><br>
+        <br>
+        <br>
+    <hr>
+    <br>
+    <br>
+        <h2>Behavioral Changes</h2>
+        <br>
+        <p>What changes Has your Device Undergone Recently</p>
+        <br>
+        <br>
+        <br>
+        <% behaviors.forEach(behavior => { %>
+          <label class="behave">
+              <input type="checkbox" name="behavior" value="<%= behavior %>"> <%= behavior %>
+          </label><br>
+      <% }); %>
+  
+        <br>
+        <br>
+        <br>
+      <label for="screenshot">
+        Provide A Screenshot 1: <span class="red">*</span><br>
+        <input type="file" name="screenshot" id="screenshot" placeholder="Upload a Screenshot" required><br>
+      </label>
+      <label for="screenshot1">
+        Provide A Screenshot 2: <br>
+        <input type="file" name="screenshot" id="screenshot2" placeholder="Upload a Screenshot"><br>
+      </label>
+      <label for="screenshot2">
+        Provide A Screenshot 3: <br>
+        <input type="file" name="screenshot" id="screenshot2" placeholder="Upload a Screenshot"><br>
+      </label>
+      
+      <button type="submit">Report</button>
+    </form>
+  </section>
+  <% if (typeof success !== "undefined" && !success) { %>
+    <div class="overlay">
+      <div class="overlay-content">
+        <p>Report submission failed. Please try again.</p>
+        <button onclick="closeOverlay()">Close</button>
+      </div>
+    </div>
+  <% } %>
+
+  <script>
+    function closeOverlay() {
+      document.querySelector('.overlay').style.display = 'none';
+    }
+  </script>
+
+  <%- include ("partials/footer") %>
+</body>
+</html>

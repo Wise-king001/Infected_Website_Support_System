@@ -1,0 +1,6 @@
+<% let processedBody = body.replace(/{%a="(.*?)",t="(.*?)"%}/g, function(match, url, text) { %>
+    <a href="<%= url %>" target="_blank"><%= text %></a>
+  <% }); %>
+  
+  <%- processedBody %>
+  

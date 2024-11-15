@@ -88,7 +88,7 @@ a {
   body {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     background: #f9f9f9;
     color: #333;
   }
@@ -134,6 +134,7 @@ a {
     padding: 2em 1em;
     background-color: #fff;
     text-align: center;
+    align-items: center;
   }
   
   .features h2 {
@@ -152,6 +153,7 @@ a {
   .feature {
     background: #f1f1f1;
     padding: 1.5em;
+    padding-top: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -217,4 +219,430 @@ a {
       padding: 0.6em 1.5em;
     }
   }
-  
+  /* General Styles */
+.site-header {
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-header .logo {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: white;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+}
+
+.nav-links li {
+  margin-left: 20px;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-size: 1em;
+}
+
+.nav-links li a:hover {
+  color: #aaa;
+}
+
+/* Hamburger Menu Icon Styles */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger span {
+  height: 3px;
+  width: 25px;
+  background-color: white;
+  margin: 4px 0;
+  transition: 0.3s;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  #nav-link{
+    display: none;
+  }
+  #nav-open{
+    display: block;
+  }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: #333;
+    width: 100%;
+    flex-direction: column;
+    text-align: center;
+  }
+  .nav-active {
+    display: flex;
+  }
+  .nav-links li {
+    margin: 15px 0;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+  .features{
+    /* padding: -10px; */
+  }
+}
+.form-section{
+  padding: 20px;
+}
+.result-section{
+  padding: 20px;
+}
+form input{
+  width: 95%;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 20px;
+  margin: 10px;
+}
+form button{
+  width: 98%;
+  padding: 10px;
+  border: none;
+  background-color: #005bb5;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+}
+form label{
+  color: black;
+  font-size: 13px;
+  font-weight: bolder;
+}
+.symptoms{
+  color: black;
+  font-size: 15px;
+  font-weight: bolder;
+  display: flex;
+    align-items: center; /* Ensures the checkbox and label are aligned in the same row */
+    margin-right: 10px;
+  /* flex-direction: row; */
+  /* background-color: red; */
+}
+.behave{
+  color: black;
+  font-size: 15px;
+  font-weight: bolder;
+  display: flex;
+    align-items: center; /* Ensures the checkbox and label are aligned in the same row */
+    margin-right: 10px;
+  /* flex-direction: row; */
+  /* background-color: red; */
+}
+#checky{
+  display: flex;
+  flex-direction: row;
+
+}
+#checky input{
+  width: 10px;
+}
+.symptoms input{
+  width: 10px;
+
+}
+.behave input{
+  width: 10px;
+
+}
+/* Overlay Styles */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.overlay-content button {
+  margin-top: 10px;
+  padding: 10px 20px;
+}
+.red{
+  color: red;
+}
+#didi{
+  width: 95%;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 20px;
+  margin: 10px;
+}
+.form-container {
+  width: 80%;
+  margin: 2em auto;
+  padding: 2em;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  text-align: center;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 1.5em;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5em;
+}
+
+input[type="text"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+textarea {
+  resize: none;
+  overflow: hidden;
+  min-height: 150px;
+}
+
+.instruction {
+  font-size: 14px;
+  color: #666;
+  margin-top: 0.5em;
+}
+
+.file-input {
+  padding: 12px;
+  font-size: 16px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #45a049;
+}
+/* Blog Section Styling */
+.blog-section {
+  margin: 20px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.blog-post {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.blog-post:hover {
+  transform: scale(1.005);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Title Styling */
+.blog-post h3 {
+  font-size: 24px;
+  color: #2c3e50;
+  margin: 0 0 10px 0;
+  padding: 10px;
+  border-left: 5px solid #3498db; /* Blue border to highlight title */
+  transition: color 0.3s ease-in-out;
+}
+
+.blog-post h3 a {
+  text-decoration: none;
+  color: inherit; /* Inherit the color for the link */
+}
+
+.blog-post h3 a:hover {
+  color: #3498db; /* Change title color on hover */
+}
+
+/* Body Styling */
+.blog-post p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 10px 0;
+  max-height: 100px;
+  overflow: hidden; /* Truncate after 25 words */
+}
+
+/* Time Formatting */
+.blog-post small {
+  display: block;
+  font-size: 14px;
+  color: #aaa;
+  margin-top: 10px;
+}
+
+/* Make blog section responsive */
+@media (max-width: 768px) {
+  .blog-post {
+    padding: 15px;
+  }
+
+  .blog-post h3 {
+    font-size: 20px;
+  }
+
+  .blog-post p {
+    font-size: 14px;
+  }
+}
+/* Full Post Section Styling */
+.full-post-section {
+  margin: 40px auto;
+  width: 90%;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.full-post-section h1 {
+  font-size: 36px;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.full-post-section small {
+  display: block;
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+/* Post Body Styling */
+.full-post-section .post-body {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.8;
+}
+
+.full-post-section .post-body p {
+  margin-bottom: 20px;
+}
+
+/* Styling for images within the post */
+.full-post-section img {
+  max-width: 80%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  display: block;
+}
+
+/* Make the layout responsive */
+@media (max-width: 768px) {
+  .full-post-section {
+    padding: 20px;
+  }
+
+  .full-post-section h1 {
+    font-size: 28px;
+  }
+
+  .full-post-section .post-body {
+    font-size: 16px;
+  }
+
+  .full-post-section small {
+    font-size: 12px;
+  }
+}
+.blogLink{
+  color: #000dff;
+  text-decoration: none;
+}
+.blogLink:link{
+  color: #000dff;
+  text-decoration: none;
+}
+.blogLink:visited{
+  color: #ff0040;
+  text-decoration: none;
+}
+.blogLink:hover{
+  color: #000dff;
+  text-decoration: underline;
+}
+.blogLink:active{
+  color: #b300ff;
+  text-decoration: none;
+}
+.feedback{
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+.feedback h3{
+  color: rgb(0, 173, 253);
+  font-weight: bolder;
+  margin-bottom: 20px;
+  margin-top: 15px;
+}
+.feedback p{
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 20px;
+  text-indent: 20px;
+}
+.feedback h2{
+  text-align: left;
+  color: #45a049;
+}

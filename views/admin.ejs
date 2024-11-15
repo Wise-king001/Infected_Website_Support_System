@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Virus Checker</title>
+  <title>Admin - Login</title>
   <link rel="stylesheet" href="/css/styles.css" type="text/css">
 </head>
 <body>
   <%- include ("partials/header") %>
 
   <section class="form-section">
-    <h2>Login to Your Account</h2>
-    <form action="/login" method="POST">
+    <h2>Login as Admin</h2>
+    <form action="/admin/login" method="POST">
       <input type="email" name="email" placeholder="Email" required>
       <input type="password" name="password" placeholder="Password" required>
-      <button type="submit">Login</button>
+      <button type="submit">Login admin</button>
     </form>
   </section>
   <% if (typeof error !== "undefined" && error==="password") { %>

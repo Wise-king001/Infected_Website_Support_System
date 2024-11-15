@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VC | admin</title>
+  <link rel="stylesheet" href="/css/styles.css" type="text/css">
+</head>
+<body>
+    <%- include ("partials/adminheader") %>
+    <div class="form-container">
+  <h2>Create a New Blog Post</h2>
+  <form action="/blog" method="POST" enctype="multipart/form-data">
+    <!-- Title Input -->
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" placeholder="Enter blog title" required>
+    </div>
+
+    <!-- Body Textarea with Instruction -->
+    <div class="form-group">
+      <label for="content">Content</label>
+      <textarea id="content" name="content" placeholder="Write your blog post here..." oninput="autoResize(this)" required></textarea>
+      <p class="instruction">Use <code>{%a="url",t="text"%}</code> to add links in your post.</p>
+    </div>
+
+    <!-- Image Upload -->
+    <div class="form-group">
+      <label for="image">Upload Image</label>
+      <input type="file" id="image" name="image" class="file-input" accept="image/*" required>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="submit-btn">Post Blog</button>
+  </form>
+</div>
+<% if (success) { %>
+    <div class="overlay">
+      <div class="overlay-content">
+        <p>Signed in successfully!</p>
+        <button onclick="closeOverlay()">Close</button>
+      </div>
+    </div>
+  <% } %>
+  <% if (blogged) { %>
+    <div class="overlay">
+      <div class="overlay-content">
+        <p>Blog Posted successfully!</p>
+        <button onclick="closeOverlay()">Close</button>
+      </div>
+    </div>
+  <% } %>
+
+  <script>
+    function closeOverlay() {
+      document.querySelector('.overlay').style.display = 'none';
+    }
+  </script>
+<script>
+  function autoResize(textarea) {
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+  }
+</script>
+
+</body>
+</html>

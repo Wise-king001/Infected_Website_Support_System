@@ -11,14 +11,23 @@
 
   <section class="blog-section">
     <h2>Latest Articles</h2>
-    <div class="blog-post">
-      <h3>Understanding Website Safety</h3>
-      <p>Learn about common online threats and how to protect yourself.</p>
-      <a href="#">Read More</a>
-    </div>
-    <!-- Additional blog posts here -->
+
+    <% if (posts.length === 0) { %>
+      <p>No posts available at the moment. Check back later!</p>
+    <% } else { %>
+      <!-- Loop through the posts and display them -->
+      <% posts.forEach(post => { %>
+        <div class="blog-post">
+          <h3><a href="/blog/<%= post.postID %>"><%= post.title %></a></h3>
+          <p><%= post.body %></p>
+          <small><%= post.time %></small>
+        </div>
+      <% }) %>
+    <% } %>
+
   </section>
 
   <%- include ("partials/footer") %>
 </body>
 </html>
+

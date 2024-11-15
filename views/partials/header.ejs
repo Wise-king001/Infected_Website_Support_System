@@ -1,12 +1,36 @@
 <header class="site-header">
-    <nav>
-      <a href="/" class="logo">Virus Checker</a>
-      <ul>
-        <li><a href="/">Home</a></li>
+  <nav>
+    <a href="/" class="logo">Virus Checker</a>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <ul class="nav-links" id="nav-link">
+      <li><a href="/">Home</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/report">Report Attack</a></li>
+      <% if (user) { console.log(user) %>
+        <!-- Show user email and logout option if logged in -->
+        <li><a href="#">Welcome, <%= user.email %></a></li>
+        <li><a href="/logout">Logout</a></li>
+      <% } else { %>
+        <!-- Show login/signup options if not logged in -->
         <li><a href="/login">Login</a></li>
         <li><a href="/signup">Sign Up</a></li>
-        <li><a href="/blog">Blog</a></li>
-      </ul>
-    </nav>
-  </header>
-  
+      <% } %>
+    </ul>
+  </nav>
+</header>
+<script>
+  function toggleMenu() {
+    const navLinks = document.querySelector('.nav-links');
+    navLinks.classList.toggle('nav-active');
+    if (navLinks.id === "nav-link"){
+      navLinks.id = 'nav-open';
+    }else{
+      navLinks.id = 'nav-link';
+    }
+    
+  }
+</script>

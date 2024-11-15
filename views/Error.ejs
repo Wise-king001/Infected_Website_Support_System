@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - Virus Checker</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <%- include ("partials/header") %>
+
+  <section class="blog-section">
+    <center>
+        <h2>ERROR</h2>
+    <div class="blog-post">
+      <h3><%= errorname %></h3>
+      <p><%= errormessage %></p>
+    </div>
+    </center>
+  </section>
+
+  <%- include ("partials/footer") %>
+</body>
+</html>

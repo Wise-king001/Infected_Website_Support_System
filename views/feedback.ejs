@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog - Virus Checker</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <%- include ("partials/header") %>
+
+  <section class="result-section">
+    <h1>There is a high chance you're Facing "<%= Malware %>"</h1>
+    <div class="feedback">
+        <br>
+      <h3>What is <%= Malware %>?</h3>
+      <p><%= MainMalwareExplained %></p>
+      <h3>Solutions: </h3>
+      <p><%= MainMalwareSolution %></p>
+      <br>
+      <br>
+      <hr>
+      <br>
+      <br>
+      <h3>Not Your Issue:</h3>
+      <p>If the Solution explained has not solved your problem then you should check the other possible Problem below.</p>
+      <h2>Other possible Causes</h2>
+      <h3><%= Malware2 %></h3>
+      <p><%= Malware2Solution %></p>
+    </div>
+    <!-- Additional blog posts here -->
+  </section>
+
+  <%- include ("partials/footer") %>
+</body>
+</html>

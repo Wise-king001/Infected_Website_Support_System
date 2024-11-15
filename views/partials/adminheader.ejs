@@ -1,0 +1,30 @@
+<header class="site-header">
+    <nav>
+      <a href="/admin" class="logo">VC | Admin</a>
+      <!-- Hamburger Icon -->
+      <div class="hamburger" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <!-- Navigation Links -->
+      <ul class="nav-links" id="nav-link">
+        <li><a href="/admin">Blog</a></li>
+        <li><a href="/admin/addmalware">Add Malware</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+  <script>
+    function toggleMenu() {
+      const navLinks = document.querySelector('.nav-links');
+      navLinks.classList.toggle('nav-active');
+      if (navLinks.id === "nav-link"){
+        navLinks.id = 'nav-open';
+      }else{
+        navLinks.id = 'nav-link';
+      }
+      
+    }
+  </script>
+  
