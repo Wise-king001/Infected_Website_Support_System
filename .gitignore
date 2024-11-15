@@ -2,3 +2,4 @@ node_modules
 Database
 .env
 uploads
+data
