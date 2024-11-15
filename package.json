@@ -4,7 +4,8 @@
   "description": "web service",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon start"
+    "test": "nodemon start",
+    "start": "node index.js"
   },
   "keywords": [
     "Malware"
