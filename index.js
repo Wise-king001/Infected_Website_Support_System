@@ -470,38 +470,45 @@ app.post("/report", upload.array("screenshot", 3), async (req, res) => {
   } = req.body;
 
   try {
-    const files = req.files;
-    const reportId = req.reportId; // Retrieve the reportId set in middleware
+    const reportId = req.reportId || `report_${Date.now()}`; // Fallback if req.reportId is missing
+    const files = req.files || [];
+    const imagePaths = files.map((file) => file.path);
 
-    // Prepare the report data
     const reportData = {
       reportId,
-      symptoms,
-      device_type,
-      os_version,
-      recent_apps,
-      network_type,
-      last_scan_date,
-      behavior,
-      images: files.map((file) => file.path),
+      symptoms: symptoms || [],
+      device_type: device_type || "Unknown",
+      os_version: os_version || "Unknown",
+      recent_apps: recent_apps || [],
+      network_type: network_type || "Unknown",
+      last_scan_date: last_scan_date || "Unknown",
+      behavior: behavior || "No behavior provided",
+      images: imagePaths,
     };
 
-    // Define file path
-    const filePath = path.join(__dirname, `data/report/${reportId}.json`);
+    // Define the directory and file paths
+    const directoryPath = path.join(__dirname, "data/report");
+    const filePath = path.join(directoryPath, `${reportId}.json`);
+
+    // Ensure the directory exists
+    if (!fs.existsSync(directoryPath)) {
+      fs.mkdirSync(directoryPath, { recursive: true });
+      console.log(`Directory created: ${directoryPath}`);
+    }
 
     // Write report data to a JSON file
     fs.writeFileSync(filePath, JSON.stringify(reportData, null, 2));
 
-    // Log the saved data
     console.log("Report Saved:", reportData);
 
     // Redirect to the results page with the report ID
     res.redirect(`/report-results?y=true&id=${reportId}`);
   } catch (e) {
     console.error("Error saving data to the report file", e);
-    res.render("report", { success: false });
+    res.status(500).render("report", { success: false, error: "An error occurred while saving the report." });
   }
 });
+
 app.get("/report-results", async (req, res) => {
   const { id } = req.query;
 
