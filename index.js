@@ -746,6 +746,14 @@ app.post(
     }
   }
 );
+app.get('/privacy', (req, res) => {
+  res.render('privacy', {
+      companyName: 'Your Company Name',
+      supportEmail: 'support@yourcompany.com',
+      companyAddress: '123 Your Street, Your City, Your Country'
+  });
+});
+
 
 app.get("/error", (req, res) => {
   const query = req.query;

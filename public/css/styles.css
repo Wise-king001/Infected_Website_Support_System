@@ -392,10 +392,9 @@ form label{
   color: red;
 }
 #didi{
-  width: 95%;
-  padding: 10px;
-  border: 1px solid black;
-  border-radius: 20px;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
   margin: 10px;
 }
 .form-container {
@@ -645,4 +644,84 @@ textarea {
 .feedback h2{
   text-align: left;
   color: #45a049;
+}
+#behave{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+#symp{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.behave{
+  border: 0 solid black;
+  padding-right: 15px;
+  border-radius: 20px;
+  background-color: #6e6ef8;
+  text-transform: capitalize;
+}
+.symptoms{
+  border: 0 solid black;
+  padding-right: 15px;
+  border-radius: 20px;
+  background-color: #6e6ef8;
+  text-transform: capitalize;
+}
+.symptoms input{
+  width: 15px;
+  height: 15px;
+  border-radius: 5px;
+  border-color: #1cfc23;
+  accent-color: #4CAF50;
+}
+.behave input{
+  width: 15px;
+  height: 15px;
+  border-radius: 5px;
+  border-color: #1cfc23;
+  accent-color: #4CAF50;
+}
+.info{
+  font-size: 16px;
+  color: #666;
+  margin-top: 10px;
+  text-indent: 15px;
+}
+.info a{
+  color: #000dff;
+}
+.form-section h1{
+  color: #0078ff;
+}
+.form-section h2{
+  color: #45a049;
+  text-align: left;
+}
+.file-input input[type="file"] {
+  display: none;
+}
+
+/* Style the custom label */
+.file-input .custom-file-label {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #0078ff; /* Button color */
+  color: white;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.file-input .custom-file-label:hover {
+  background-color: #0056b3; /* Hover color */
+}
+
+/* Style for file name display */
+.file-input .file-name {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #555;
 }

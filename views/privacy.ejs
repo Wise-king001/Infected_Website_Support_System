@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Privacy Policy">
+    <title>Privacy Policy</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <%- include ("partials/header") %>
+    <main>
+        <section class="privacy-policy">
+            <h1>Privacy Policy</h1>
+            <p>Effective Date: <%= new Date().toLocaleDateString() %></p>
+
+            <h3>Introduction</h3>
+            <p>Welcome to Virus Checker. Your privacy is important to us, and we are committed to protecting your personal data. This privacy policy explains how we handle your information.</p>
+
+            <h3>Data We Collect</h3>
+            <ul>
+                <li><strong>Personal Information:</strong> Name, email address, phone number, etc.</li>
+                <li><strong>Usage Data:</strong> Information on how you use our website or services.</li>
+                <li><strong>Cookies:</strong> We use cookies to enhance your experience on our website.</li>
+            </ul>
+
+            <h3>How We Use Your Data</h3>
+            <p>We use your data to:</p>
+            <ul>
+                <li>Provide and maintain our services</li>
+                <li>Improve our website and user experience</li>
+                <li>Communicate with you, including marketing and promotional materials</li>
+                <li>Comply with legal obligations</li>
+            </ul>
+
+            <h3>Your Rights</h3>
+            <p>Under GDPR, you have the following rights:</p>
+            <ul>
+                <li>Access your personal data</li>
+                <li>Correct any inaccuracies in your data</li>
+                <li>Request data deletion</li>
+                <li>Restrict processing of your data</li>
+                <li>Data portability</li>
+                <li>Withdraw consent at any time</li>
+            </ul>
+
+            <h3>How to Contact Us</h3>
+            <p>If you have any questions or concerns about this privacy policy or your data, please contact us:</p>
+            <p>
+                <strong>Email:</strong> <a href="mailto:viruschecker@gmail.com">viruschecker@gmail.com</a><br>
+                <strong>Address:</strong> Virus Checker Online
+            </p>
+
+            <h3>Updates to This Policy</h3>
+            <p>We may update this privacy policy from time to time. Please review it periodically for any changes.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; <%= new Date().getFullYear() %> Virus Checker. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
