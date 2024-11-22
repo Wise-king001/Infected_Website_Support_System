@@ -695,7 +695,14 @@ textarea {
 .form-section h1{
   color: #0078ff;
 }
+.privacy-policy h1{
+  color: #0078ff;
+}
 .form-section h2{
+  color: #45a049;
+  text-align: left;
+}
+.privacy-policy h3{
   color: #45a049;
   text-align: left;
 }
@@ -724,4 +731,11 @@ textarea {
   margin-left: 10px;
   font-size: 14px;
   color: #555;
+}
+.privacy-policy{
+  padding: 30px;
+}
+.privacy-policy ul{
+  list-style-type: circle;
+  list-style-position: inside;
 }
