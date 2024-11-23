@@ -739,3 +739,36 @@ textarea {
   list-style-type: circle;
   list-style-position: inside;
 }
+#sol{
+  padding: 20px;
+}
+#sol2{
+  padding: 20px;
+}
+#sol h3{
+  color: rgb(253, 114, 0);
+  font-weight: bolder;
+  margin-bottom: 20px;
+  margin-top: 15px;
+}
+#sol2 h3{
+  color: rgb(253, 114, 0);
+  font-weight: bolder;
+  margin-bottom: 20px;
+  margin-top: 15px;
+}
+#sol ol{
+  padding-left: 15px;
+  list-style-type: decimal;
+  list-style-position: inside;
+}
+#sol2 ol{
+  padding-left: 15px;
+  list-style-type: decimal;
+  list-style-position: inside;
+  color: #666;
+}
+#sol ol li{
+  padding-bottom: 20px;
+  color: #666;
+}

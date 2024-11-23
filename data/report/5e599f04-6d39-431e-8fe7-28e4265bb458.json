@@ -1,0 +1,18 @@
+{
+  "reportId": "5e599f04-6d39-431e-8fe7-28e4265bb458",
+  "symptoms": [
+    "slow performance",
+    "pop-up ads"
+  ],
+  "device_type": "android",
+  "os_version": "Unknown",
+  "recent_apps": "passed",
+  "network_type": "passed",
+  "last_scan_date": "Unknown",
+  "behavior": [
+    "modifies system files",
+    "disables antivirus software",
+    "creates unauthorized user accounts"
+  ],
+  "images": []
+}
